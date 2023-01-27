@@ -7,11 +7,11 @@
 import UIKit
 
 extension UIColor {
-    static var ypBlack: UIColor { UIColor(named: "YPBlack") ?? .clear }
-    static var ypBlue: UIColor { UIColor(named: "YPBlue") ?? .clear }
-    static var ypGreen: UIColor { UIColor(named: "YPGreen") ?? .clear }
-    static var ypGray: UIColor { UIColor(named: "YPGray") ?? .clear }
-    static var ypRed: UIColor { UIColor(named: "YPRed") ?? .clear }
-    static var ypBackground: UIColor { UIColor(named: "YPBackground") ?? .clear }
-    static var ypWhite: UIColor { UIColor(named: "YPWhite") ?? .clear }
+    static let  ypBlack = UIColor(named: "YPBlack")
+    static let  ypBlue =  UIColor(named: "YPBlue")
+    static let  ypGreen = UIColor(named: "YPGreen")
+    static let  ypGray = UIColor(named: "YPGray")
+    static let  ypRed =  UIColor(named: "YPRed")
+    static let  ypBackground = UIColor(named: "YPBackground")
+    static let  ypWhite = UIColor(named: "YPWhite")
 }

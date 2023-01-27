@@ -19,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A6213C082983A82F00F32828 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A675013A297E712500D10FBE /* ImageFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A675013D297E712500D10FBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A675013F297E712500D10FBE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -77,6 +78,7 @@
 				A6750146297E712700D10FBE /* Assets.xcassets */,
 				A675013D297E712500D10FBE /* AppDelegate.swift */,
 				A675013F297E712500D10FBE /* SceneDelegate.swift */,
+				A6213C082983A82F00F32828 /* Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
