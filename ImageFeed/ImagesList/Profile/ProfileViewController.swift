@@ -9,11 +9,8 @@ import UIKit
 
 final class ProfileViewController : UIViewController {
     
-    private lazy var profileImage : UIImage = {
-        let profileImage = UIImage(named: "avatar")!
-        return profileImage
-    }()
-    
+    private let profileImage = UIImage(named: "avatar")
+        
     private lazy var imageView : UIImageView = {
         let imageView = UIImageView(image: profileImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
