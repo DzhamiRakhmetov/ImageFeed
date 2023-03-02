@@ -10,12 +10,14 @@ import Foundation
 final class OAuth2Service {
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
+    private let decoder = JSONDecoder()
+    private let tokenStorage = OAuth2TokenStorage.shared
     private (set) var authToken: String? {
         get {
-            return OAuth2TokenStorage().token
+            return tokenStorage.token
         }
         set {
-            OAuth2TokenStorage().token = newValue
+            tokenStorage.token = newValue
         }
     }
     
@@ -52,8 +54,8 @@ private func authTokenRequest(code: String) -> URLRequest {
 
 struct OAuthTokenResponseBody: Decodable {
     let accessToken, tokenType, scope: String
-    let createdAt: Int
-    
+    let createdAt: Date
+   
     enum CodingKeys: String, CodingKey {
         case accessToken = "access_token"
         case tokenType = "token_type"
@@ -62,14 +64,15 @@ struct OAuthTokenResponseBody: Decodable {
     }
 }
 
+
 extension OAuth2Service {
     private func object(for request: URLRequest, completion: @escaping(Result<OAuthTokenResponseBody, Error>) -> Void) -> URLSessionTask {
-        let decoder = JSONDecoder()
+        
         return urlSession.data(for: request) {(result: Result<Data, Error>) in
             switch result {
             case .success(let data):
                 do {
-                    let object = try decoder.decode(OAuthTokenResponseBody.self, from: data)
+                    let object = try self.decoder.decode(OAuthTokenResponseBody.self, from: data)
                     completion(.success(object))
                 } catch {
                     completion(.failure(error))
