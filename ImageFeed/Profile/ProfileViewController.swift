@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController : UIViewController {
     
+    private var profileImageServiceObserver: NSObjectProtocol?
+    private var authToken = OAuth2TokenStorage()
+    private let profileService = ProfileService.shared
     private let profileImage = UIImage(named: "avatar")
-        
-    private lazy var imageView : UIImageView = {
+    
+    private lazy var avatarImageView : UIImageView = {
         let imageView = UIImageView(image: profileImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -56,10 +60,38 @@ final class ProfileViewController : UIViewController {
         super.viewDidLoad()
         configureViews()
         configureConstraints()
+        updateProfileDetails(profile: profileService.profile)
+        
+        profileImageServiceObserver = NotificationCenter.default.addObserver(
+            forName: ProfileImageService.DidChangeNotification,
+            object: nil,
+            queue: .main) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateAvatar()
+            }
+        view.backgroundColor = .ypBlack
+        updateAvatar()
+    }
+    
+    // MARK: - Functions
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL) else { return }
+        let processor = RoundCornerImageProcessor(cornerRadius: 35)
+        avatarImageView.kf.indicatorType = .activity
+        avatarImageView.kf.setImage(with: url,
+                                    placeholder: UIImage(named: "placeholder.jpeg"),
+                                    options: [.processor(processor),.cacheSerializer(FormatIndicatedCacheSerializer.png)])
+        let cache = ImageCache.default
+        cache.clearDiskCache()
+        cache.clearMemoryCache()
+        
     }
     
     private func configureViews() {
-        view.addSubview(imageView)
+        view.addSubview(avatarImageView)
         view.addSubview(nameLabel)
         view.addSubview(loginNameLabel)
         view.addSubview(descriptionLabel)
@@ -68,23 +100,29 @@ final class ProfileViewController : UIViewController {
     
     private func configureConstraints() {
         NSLayoutConstraint.activate([
-            imageView.widthAnchor.constraint(equalToConstant: 70),
-            imageView.heightAnchor.constraint(equalToConstant: 70),
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
-            imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            nameLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
-            nameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 70),
+            avatarImageView.heightAnchor.constraint(equalToConstant: 70),
+            avatarImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 32),
+            avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            nameLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 8),
+            nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             loginNameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            loginNameLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            loginNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             descriptionLabel.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
-            descriptionLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            descriptionLabel.leadingAnchor.constraint(equalTo: avatarImageView.leadingAnchor),
             logoutButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -26),
-            logoutButton.centerYAnchor.constraint(equalTo: imageView.centerYAnchor)
+            logoutButton.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor)
         ])
+    }
+    
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else {return}
+        self.nameLabel.text = profile.name
+        self.loginNameLabel.text = profile.loginName
+        self.descriptionLabel.text = profile.bio
     }
     
     @objc
     private func didTapLogOutButton() {
-        
     }
 }
