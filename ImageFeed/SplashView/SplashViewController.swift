@@ -103,15 +103,14 @@ extension SplashViewController: AuthViewControllerDelegate {
             guard let self = self else {return}
             switch result {
             case .success(let profile):
-                UIBlockingProgressHUD.dismiss()
                 self.switchToTabBarController()
                 self.profileImageService.fetchProfileImageURL(username: profile.username) { _ in }
             case .failure(let error):
                 self.showAlert(with: error)
-                UIBlockingProgressHUD.dismiss()
                 print(error)
             }
         }
+        UIBlockingProgressHUD.dismiss()
     }
     
     private func showAlert(with error: Error) {

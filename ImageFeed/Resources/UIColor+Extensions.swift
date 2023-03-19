@@ -65,7 +65,6 @@ extension URLSession {
                 fulfillCompletion(.failure(NetworkError.urlSessionError))
             }
         }
-        task.resume()
         return task
     }
 }
