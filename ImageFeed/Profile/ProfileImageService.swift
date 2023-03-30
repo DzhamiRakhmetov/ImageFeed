@@ -24,10 +24,12 @@ struct ImageSize: Codable {
 final class ProfileImageService {
     
     private (set) var avatarURL: String?
-    private let urlSession = URLSession.shared
+   
     private var task: URLSessionTask?
     private let decoder = JSONDecoder()
+    private let urlSession = URLSession.shared
     private var lastUserName: String?
+    private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     static let shared = ProfileImageService()
     static let DidChangeNotification = Notification.Name("ProfileImageProviderDidChange")
     
@@ -67,7 +69,7 @@ extension ProfileImageService {
         var urlComponents = URLComponents()
         urlComponents.path = "/users/\(username)"
         guard let url = urlComponents.url(relativeTo: DefaultBaseURL) else {fatalError("Failed to create URL for avatar Image") }
-        guard let token = OAuth2TokenStorage().token else {fatalError("Failed to create Token")}
+        guard let token = oAuth2TokenStorage.token else {fatalError("Failed to create Token")}
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
