@@ -116,10 +116,13 @@ extension ImagesListViewController : UITableViewDataSource {
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
         cell.setIsLiked(isLiked: photos[indexPath.row].isLiked)
-        guard let date = photos[indexPath.row].createdAt else { return cell.dateLabel.text = nil }
+        guard let date = photos[indexPath.row].createdAt else {
+            cell.dateLabel.text = nil
+            return
+        }
         cell.dateLabel.text = dateFormatter.string(from: date)
     }
-        
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return photos.count

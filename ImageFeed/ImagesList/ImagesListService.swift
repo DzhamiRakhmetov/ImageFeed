@@ -89,6 +89,7 @@ final class ImagesListService {
                 NotificationCenter.default.post(name: ImagesListService.DidChangeNotification, object: self, userInfo: ["photos" : self.photos] )
                 self.task = nil
             case .failure(let error):
+                self.task = nil
                 print(error)
             }
         }

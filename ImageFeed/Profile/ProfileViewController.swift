@@ -127,6 +127,12 @@ final class ProfileViewController : UIViewController {
         ])
     }
     
+//    private func setUpGradient() {
+//        nameLabel.setUpGradient(frame: CGRect(x: 0, y: 0, width: 230, height: 30), cornerRadius: 15)
+//        avatarImageView.setUpGradient(frame: CGRect(x: 0, y: 0, width: 70, height: 70), cornerRadius: 35)
+//        
+//    }
+    
     private func updateProfileDetails(profile: Profile?) {
         guard let profile = profile else {return}
         self.nameLabel.text = profile.name
