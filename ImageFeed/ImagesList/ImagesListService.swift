@@ -63,10 +63,10 @@ final class ImagesListService {
     private let oAuth2TokenStorage = OAuth2TokenStorage.shared
     
     func preparePhoto(_ photoResult: [PhotoResult]) {
-        for item in photoResult {
-            let photo = Photo(id: item.id, size: CGSize(width: item.width, height: item.height), createdAt: dateFormatter.date(from: item.createdAt), welcomeDescription: item.description, thumbImageURL: item.urls.thumb, fullImageURL: item.urls.full, isLiked: item.likedByUser)
-            self.photos.append(photo)
+        let newPhotos = photoResult.map { item in
+            return Photo(id: item.id, size: CGSize(width: item.width, height: item.height), createdAt: dateFormatter.date(from: item.createdAt), welcomeDescription: item.description, thumbImageURL: item.urls.thumb, fullImageURL: item.urls.full, isLiked: item.likedByUser)
         }
+        self.photos.append(contentsOf: newPhotos)
         print("Number of photos being appended - \(photoResult.count)")
         print("Number of photos in array - \(photos.count)")
     }
@@ -75,7 +75,7 @@ final class ImagesListService {
     
     func fetchPhotosNextPage(){
         assert(Thread.isMainThread)
-        task?.cancel()
+        if task != nil {return}
         
         let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
         lastLoadedPage = nextPage

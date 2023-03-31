@@ -115,9 +115,9 @@ extension ImagesListViewController : UITableViewDataSource {
         cell.cellImage.kf.setImage(with: thumbURL, placeholder: placeholder) { _ in
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
-        guard let date = photos[indexPath.row].createdAt else {return}
-        cell.dateLabel.text = dateFormatter.string(from: date)
         cell.setIsLiked(isLiked: photos[indexPath.row].isLiked)
+        guard let date = photos[indexPath.row].createdAt else { return cell.dateLabel.text = nil }
+        cell.dateLabel.text = dateFormatter.string(from: date)
     }
         
     
@@ -147,7 +147,8 @@ extension ImagesListViewController: ImageListCellDelegate {
         guard let indexPath = tableView.indexPath(for: cell) else {return}
         let photo = photos[indexPath.row]
         UIBlockingProgressHUD.show()
-        imagesListService.changeLikes(photoID: photo.id, isLike: !photo.isLiked) { result in
+        imagesListService.changeLikes(photoID: photo.id, isLike: !photo.isLiked) { [weak self]  result in
+            guard let self = self else {return}
             switch result {
             case .success:
                 self.photos = self.imagesListService.photos
