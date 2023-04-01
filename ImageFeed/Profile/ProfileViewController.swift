@@ -11,7 +11,7 @@ import Kingfisher
 final class ProfileViewController : UIViewController {
     
     private var profileImageServiceObserver: NSObjectProtocol?
-    private var authToken = OAuth2TokenStorage()
+    private var authToken = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
     private let profileImage = UIImage(named: "avatar")
     
@@ -52,6 +52,7 @@ final class ProfileViewController : UIViewController {
         let logoutButton = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: self, action: #selector(self.didTapLogOutButton))
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1.0)
+        logoutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
         return logoutButton
     }()
     
@@ -73,7 +74,18 @@ final class ProfileViewController : UIViewController {
         updateAvatar()
     }
     
-    // MARK: - Functions
+    // MARK: - LogOut
+    
+    private func logOut(){
+        authToken.token = nil
+        WebViewViewController.clean()
+        guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
+        
+    }
+    
+    // MARK: - UpdateUI
     
     private func updateAvatar() {
         guard
@@ -115,6 +127,12 @@ final class ProfileViewController : UIViewController {
         ])
     }
     
+//    private func setUpGradient() {
+//        nameLabel.setUpGradient(frame: CGRect(x: 0, y: 0, width: 230, height: 30), cornerRadius: 15)
+//        avatarImageView.setUpGradient(frame: CGRect(x: 0, y: 0, width: 70, height: 70), cornerRadius: 35)
+//        
+//    }
+    
     private func updateProfileDetails(profile: Profile?) {
         guard let profile = profile else {return}
         self.nameLabel.text = profile.name
@@ -124,5 +142,16 @@ final class ProfileViewController : UIViewController {
     
     @objc
     private func didTapLogOutButton() {
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены что хотите выйти?",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "Да", style: .default, handler: {[weak self] _ in
+            guard let self = self else {return}
+            self.logOut()})
+        let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+        alert.addAction(action)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }
