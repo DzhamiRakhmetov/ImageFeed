@@ -13,6 +13,7 @@ protocol ImageListCellDelegate : AnyObject {
 
 final class ImagesListCell: UITableViewCell  {
     
+   // @IBOutlet weak var gradientView : UIImageView!
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!
@@ -30,6 +31,7 @@ final class ImagesListCell: UITableViewCell  {
     func setIsLiked(isLiked: Bool){
         let liked = UIImage(named: "like_button_on")
         let disLiked = UIImage(named: "like_button_off")
+        //likeButton.accessibilityIdentifier = "likeButton"
         if isLiked {
             likeButton.setImage(liked, for: .normal)
         } else {

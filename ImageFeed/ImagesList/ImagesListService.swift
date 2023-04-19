@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 // MARK: - Structs for Decoding
 
 struct PhotoResult: Codable {
@@ -51,7 +52,7 @@ struct Liked: Codable {
     let photo: PhotoResult
 }
 
-final class ImagesListService {
+final class ImagesListService{
     
     private (set) var photos: [Photo] = []
     private var lastLoadedPage: Int?
