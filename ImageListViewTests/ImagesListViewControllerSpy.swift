@@ -16,6 +16,14 @@ final class ImagesListViewControllerSpy: ImagesListViewControllerProtocol {
         self.photos = photos
     }
     
+    func isLike(indexPath: IndexPath, isOn: Bool) {
+        
+    }
+    
+    func showLikeAlert(with: Error) {
+        
+    }
+    
     func didReceivePhotosForTableViewAnimatedUpdate(at indexPath: [IndexPath], new array: [ImageFeed.Photo]) {
         
     }

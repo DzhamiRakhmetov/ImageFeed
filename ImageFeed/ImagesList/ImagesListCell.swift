@@ -31,7 +31,6 @@ final class ImagesListCell: UITableViewCell  {
     func setIsLiked(isLiked: Bool){
         let liked = UIImage(named: "like_button_on")
         let disLiked = UIImage(named: "like_button_off")
-        //likeButton.accessibilityIdentifier = "likeButton"
         if isLiked {
             likeButton.setImage(liked, for: .normal)
         } else {

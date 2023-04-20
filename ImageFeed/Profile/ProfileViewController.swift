@@ -67,7 +67,6 @@ final class ProfileViewController : UIViewController & ProfileViewControllerProt
     }()
     
     private lazy var logoutButton : UIButton = {
-        
         let logoutButton = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: self, action: #selector(self.didTapLogOutButton))
         logoutButton.accessibilityIdentifier = "ProfileExitButton"
         logoutButton.translatesAutoresizingMaskIntoConstraints = false

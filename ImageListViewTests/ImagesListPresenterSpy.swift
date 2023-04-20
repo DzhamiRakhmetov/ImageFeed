@@ -9,10 +9,14 @@
 import Foundation
 
 final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
+    
+    var photos: [ImageFeed.Photo] = []
     var view: ImageFeed.ImagesListViewControllerProtocol?
     var viewDidLoadCalled: Bool = false
     var didFetchPhotosCalled: Bool = false
     var updateNextPageIfNeededCalled: Bool = false
+    func selectLike(indexPath: IndexPath) {}
+    
 //    var imagesListService: ImagesListService
     
   
