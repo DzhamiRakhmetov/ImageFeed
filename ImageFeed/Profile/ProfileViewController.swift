@@ -8,8 +8,23 @@
 import UIKit
 import Kingfisher
 
-final class ProfileViewController : UIViewController {
+protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfilePresenterProtocol? {get set}
     
+    func updateAvatar()
+    func didTapLogOutButton()
+    func alert(title: String, message: String, action: ((UIAlertAction) -> ())?)
+    func configureViews()
+    func setUpGradient()
+    func configureConstraints()
+    func updateProfileDetails(profile: Profile?)
+    func updateRootViewControler()
+    
+}
+
+final class ProfileViewController : UIViewController & ProfileViewControllerProtocol {
+    
+    var presenter: ProfilePresenterProtocol?
     private var profileImageServiceObserver: NSObjectProtocol?
     private var authToken = OAuth2TokenStorage.shared
     private let profileService = ProfileService.shared
@@ -23,6 +38,7 @@ final class ProfileViewController : UIViewController {
     
     private lazy var nameLabel : UILabel = {
         let nameLabel = UILabel()
+        nameLabel.accessibilityIdentifier = "ProfileNameLabel"
         nameLabel.text = "Екатерина Новикова"
         nameLabel.textColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
         nameLabel.font = UIFont.boldSystemFont(ofSize: 23)
@@ -32,6 +48,7 @@ final class ProfileViewController : UIViewController {
     
     private lazy var loginNameLabel : UILabel = {
         let loginNameLabel = UILabel()
+        loginNameLabel.accessibilityIdentifier = "ProfileLoginNameLabel"
         loginNameLabel.text = "@ekaterina_nov"
         loginNameLabel.textColor = UIColor(red: 174/255, green: 175/255, blue: 180/255, alpha: 1.0)
         loginNameLabel.font = UIFont.systemFont(ofSize: 13)
@@ -50,44 +67,22 @@ final class ProfileViewController : UIViewController {
     
     private lazy var logoutButton : UIButton = {
         let logoutButton = UIButton.systemButton(with: UIImage(systemName: "ipad.and.arrow.forward")!, target: self, action: #selector(self.didTapLogOutButton))
+        logoutButton.accessibilityIdentifier = "ProfileExitButton"
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.tintColor = UIColor(red: 245/255, green: 107/255, blue: 108/255, alpha: 1.0)
-        logoutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
+        //logoutButton.addTarget(self, action: #selector(didTapLogOutButton), for: .touchUpInside)
         return logoutButton
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureViews()
-        configureConstraints()
-        updateProfileDetails(profile: profileService.profile)
-        
-        profileImageServiceObserver = NotificationCenter.default.addObserver(
-            forName: ProfileImageService.DidChangeNotification,
-            object: nil,
-            queue: .main) { [weak self] _ in
-                guard let self = self else { return }
-                self.updateAvatar()
-            }
         view.backgroundColor = .ypBlack
-        updateAvatar()
-    }
-    
-    // MARK: - LogOut
-    
-    private func logOut(){
-        authToken.token = nil
-        WebViewViewController.clean()
-        guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
-        window.rootViewController = SplashViewController()
-        window.makeKeyAndVisible()
-        
+        presenter?.viewDidLoad()
     }
     
     // MARK: - UpdateUI
     
-    private func updateAvatar() {
+     func updateAvatar() {
         guard
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL) else { return }
@@ -99,10 +94,9 @@ final class ProfileViewController : UIViewController {
         let cache = ImageCache.default
         cache.clearDiskCache()
         cache.clearMemoryCache()
-        
     }
     
-    private func configureViews() {
+     func configureViews() {
         view.addSubview(avatarImageView)
         view.addSubview(nameLabel)
         view.addSubview(loginNameLabel)
@@ -110,7 +104,7 @@ final class ProfileViewController : UIViewController {
         view.addSubview(logoutButton)
     }
     
-    private func configureConstraints() {
+     func configureConstraints() {
         NSLayoutConstraint.activate([
             avatarImageView.widthAnchor.constraint(equalToConstant: 70),
             avatarImageView.heightAnchor.constraint(equalToConstant: 70),
@@ -127,31 +121,52 @@ final class ProfileViewController : UIViewController {
         ])
     }
     
-//    private func setUpGradient() {
-//        nameLabel.setUpGradient(frame: CGRect(x: 0, y: 0, width: 230, height: 30), cornerRadius: 15)
-//        avatarImageView.setUpGradient(frame: CGRect(x: 0, y: 0, width: 70, height: 70), cornerRadius: 35)
-//        
-//    }
+     func setUpGradient() {
+        nameLabel.setUpGradient(frame: CGRect(x: 0, y: 0, width: 230, height: 30), cornerRadius: 15)
+        loginNameLabel.setUpGradient(frame: CGRect(x: 0, y: 0, width: 150, height: 20), cornerRadius: 10)
+        descriptionLabel.setUpGradient(frame: CGRect(x: 0, y: 0, width: 90, height: 20), cornerRadius: 10)
+        avatarImageView.setUpGradient(frame: CGRect(x: 0, y: 0, width: 70, height: 70), cornerRadius: 35)
+    }
     
-    private func updateProfileDetails(profile: Profile?) {
+     func removeGradient() {
+        nameLabel.removeGradient()
+        loginNameLabel.removeGradient()
+        descriptionLabel.removeGradient()
+        avatarImageView.removeGradient()
+    }
+    
+     func updateProfileDetails(profile: Profile?) {
         guard let profile = profile else {return}
         self.nameLabel.text = profile.name
         self.loginNameLabel.text = profile.loginName
         self.descriptionLabel.text = profile.bio
+        removeGradient()
     }
     
     @objc
-    private func didTapLogOutButton() {
+     func didTapLogOutButton() {
+         presenter?.logOut()
+    }
+    
+    func alert(title: String, message: String, action: ((UIAlertAction) -> ())?) {
         let alert = UIAlertController(
-            title: "Пока, пока!",
-            message: "Уверены что хотите выйти?",
+            title: title,
+            message: message,
             preferredStyle: .alert)
-        let action = UIAlertAction(title: "Да", style: .default, handler: {[weak self] _ in
-            guard let self = self else {return}
-            self.logOut()})
-        let cancelAction = UIAlertAction(title: "Нет", style: .cancel)
+        let action = UIAlertAction(title: "Да", style: .default, handler: action)
+        let cancelAction = UIAlertAction(title: "Нет", style: .cancel, handler: nil)
         alert.addAction(action)
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+
+//MARK: - Delegate Presenter
+extension ProfileViewController {
+    func updateRootViewControler() {
+        guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
+        window.rootViewController = SplashViewController()
+        window.makeKeyAndVisible()
     }
 }

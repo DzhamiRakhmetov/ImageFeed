@@ -45,8 +45,6 @@ final class ProfileService {
     static let shared = ProfileService()
     private var lastCode: String?
     
-    
-    
     func fetchProfile(_ token: String, completion: @escaping (Result<Profile, Error>) -> Void) {
         assert(Thread.isMainThread)
         if lastCode == token {return}
@@ -73,6 +71,7 @@ final class ProfileService {
     }
 }
 
+// MARK: - Extensions
 
 extension ProfileService {
     
