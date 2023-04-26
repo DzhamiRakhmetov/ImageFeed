@@ -16,21 +16,12 @@ final class ImagesListPresenterSpy: ImagesListPresenterProtocol {
     var didFetchPhotosCalled: Bool = false
     var updateNextPageIfNeededCalled: Bool = false
     func selectLike(indexPath: IndexPath) {}
-    
-//    var imagesListService: ImagesListService
-    
-  
-    
+
     func viewDidLoad() {
         viewDidLoadCalled = true
     }
     
     func updateNextPageIfNeeded(forRowAt indexPath: IndexPath) {
          updateNextPageIfNeededCalled = true
-        //fetchPhotosNextPage()
     }
-    
-//    func fetchPhotosNextPage() {
-//            didFetchPhotosCalled = true
-//        }
 }

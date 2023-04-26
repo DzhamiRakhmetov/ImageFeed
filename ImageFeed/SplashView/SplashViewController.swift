@@ -60,20 +60,15 @@ final class SplashViewController: UIViewController {
     }
     
     private func switchToTabBarController() {
-        // Получаем экземпляр `Window` приложения
         guard let window = UIApplication.shared.windows.first else {fatalError("Invalid Configuration")}
-        
-        // Cоздаём экземпляр нужного контроллера из Storyboard с помощью ранее заданного идентификатора.
         let tapBarController = UIStoryboard(name: "Main", bundle: .main)
             .instantiateViewController(withIdentifier: "TabBarViewController")
-        
-        // Установим в `rootViewController` полученный контроллер
         window.rootViewController = tapBarController
     }
 }
 
 extension SplashViewController: AuthViewControllerDelegate {
-     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
+    func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         UIBlockingProgressHUD.show()
         dismiss(animated: true) { [weak self] in
             guard let self = self else { return }
@@ -81,7 +76,7 @@ extension SplashViewController: AuthViewControllerDelegate {
         }
     }
     
-   private func fetchOAuthToken(_ code: String) {
+    private func fetchOAuthToken(_ code: String) {
         oauth2Service.fetchAuthToken(code) { [ weak self ] result in
             guard let self = self else {return}
             switch result {

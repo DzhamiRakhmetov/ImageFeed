@@ -11,14 +11,12 @@ protocol AuthViewControllerDelegate : AnyObject {
     func authViewController(_ vc : AuthViewController, didAuthenticateWithCode code: String)
 }
 
-
 class AuthViewController: UIViewController {
     private let ShowWebViewSegueIdentifier = "ShowWebView"
     weak var delegate : AuthViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

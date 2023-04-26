@@ -26,14 +26,14 @@ private let app = XCUIApplication()
         let loginTextField = webView.descendants(matching: .textField).element
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         loginTextField.tap()
-        loginTextField.typeText("yan.mohov@mail.ru")
+        loginTextField.typeText("")
         loginTextField.swipeUp()
         //webView.swipeUp()
         
         let passwordTextFiled = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextFiled.waitForExistence(timeout: 15))
         passwordTextFiled.tap()
-        passwordTextFiled.typeText("7ig*pb+mA9f&Y!P")
+        passwordTextFiled.typeText("")
         webView.swipeUp()
         
         print(app.debugDescription)

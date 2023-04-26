@@ -13,7 +13,6 @@ protocol ImageListCellDelegate : AnyObject {
 
 final class ImagesListCell: UITableViewCell  {
     
-   // @IBOutlet weak var gradientView : UIImageView!
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var likeButton: UIButton!

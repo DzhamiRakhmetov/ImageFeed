@@ -13,7 +13,6 @@ protocol ProfileViewControllerProtocol: AnyObject {
     
     func updateAvatar()
     func didTapLogOutButton()
-//    func alert(title: String, message: String)
     func alert(title: String, message: String, action: ((UIAlertAction) -> ())?)
     func configureViews()
     func setUpGradient()
@@ -95,7 +94,6 @@ final class ProfileViewController : UIViewController & ProfileViewControllerProt
         let cache = ImageCache.default
         cache.clearDiskCache()
         cache.clearMemoryCache()
-        
     }
     
      func configureViews() {
@@ -161,18 +159,6 @@ final class ProfileViewController : UIViewController & ProfileViewControllerProt
         alert.addAction(cancelAction)
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
-//    func alert(title: String, message: String) {
-//        let alert = UIAlertController(
-//            title: title, //"Пока, пока!",
-//            message: message,// "Уверены что хотите выйти?",
-//            preferredStyle: .alert)
-//        let action = UIAlertAction(title: "Закрыть", style: .default, handler: nil)
-//        alert.addAction(action)
-//        self.present(alert, animated: true, completion: nil)
-//    }
-    
 }
 
 

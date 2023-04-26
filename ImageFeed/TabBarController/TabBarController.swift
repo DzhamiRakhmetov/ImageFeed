@@ -11,9 +11,7 @@ final class TabBarController: UITabBarController {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-       // let storyBoard = UIStoryboard(name: "Main", bundle: .main)
         
-  // let imagesListViewController = storyBoard.instantiateViewController(withIdentifier: "ImagesListViewController")
         let imagesListViewController = SetupControllers.imageVC.viewController
         imagesListViewController.tabBarItem = UITabBarItem(title: nil, image: UIImage(named: "tab_editorial_active"), selectedImage: nil)
         

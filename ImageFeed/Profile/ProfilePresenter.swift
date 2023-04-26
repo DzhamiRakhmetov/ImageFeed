@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 protocol ProfilePresenterProtocol {
     var view: ProfileViewControllerProtocol? {get set}
     func logOut()
@@ -55,5 +54,4 @@ final class ProfilePresenter: ProfilePresenterProtocol  {
         guard let view = view else {return}
         view.updateAvatar()
     }
-
 }

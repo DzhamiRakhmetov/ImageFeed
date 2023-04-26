@@ -29,7 +29,6 @@ final class WebViewViewController: UIViewController & WebViewViewControllerProto
     weak var delegate: WebViewViewControllerDelegate?
     var presenter: WebViewPresenterProtocol?
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

@@ -75,21 +75,4 @@ extension ProfileImageService {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
     }
-    
-//    private func object(for request: URLRequest, completion: @escaping(Result<UserResult, Error>) -> Void) -> URLSessionTask {
-//
-//        return urlSession.data(for: request) { (result: Result<Data, Error>) in
-//            switch result {
-//            case .success(let data):
-//                do {
-//                    let object = try self.decoder.decode(UserResult.self, from: data)
-//                    completion(.success(object))
-//                } catch {
-//                    completion(.failure(error))
-//                }
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
-//    }
 }

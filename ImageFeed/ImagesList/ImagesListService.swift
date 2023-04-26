@@ -127,7 +127,6 @@ final class ImagesListService{
         task.resume()
     }
     
-    
     private func makeRequest(path: String) -> URLRequest {
         
         guard let url = URL(string: path, relativeTo: DefaultBaseURL) else {fatalError("Failed to create URL for ImagesList")}

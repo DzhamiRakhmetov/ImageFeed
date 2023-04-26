@@ -9,10 +9,10 @@ import Foundation
 
 protocol ImagesListPresenterProtocol {
     var view: ImagesListViewControllerProtocol? {get set}
+    var photos: [Photo] {get}
     func viewDidLoad()
     func updateNextPageIfNeeded(forRowAt indexPath: IndexPath)
     func selectLike(indexPath: IndexPath)
-    var photos: [Photo] {get}
 }
 
 final class ImagesListPresenter: ImagesListPresenterProtocol {
