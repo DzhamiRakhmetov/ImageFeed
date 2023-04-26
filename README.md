@@ -5,7 +5,7 @@ An application for viewing an endless feed of pictures from Unsplash API
 ![AppScreenshot1](https://github.com/DzhamiRakhmetov/ImageFeed/blob/main/login_page.png)
 ![AppScreenshot2](https://github.com/DzhamiRakhmetov/ImageFeed/blob/main/image_feed.png)
 ![AppScreenshot3](https://github.com/DzhamiRakhmetov/ImageFeed/blob/main/image_fullSize.png)
-![AppScreenshot4](https://github.com/DzhamiRakhmetov/ImageFeed/blob/main/profile.png)
+![AppScreenshot4](https://github.com/DzhamiRakhmetov/ImageFeed/blob/main/profile_.png)
 
 # Ссылки
 
