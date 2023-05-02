@@ -129,7 +129,6 @@ An application for viewing an endless feed of pictures from Unsplash API
 
 
 
-# Нефункциональные требования
 
 ## Технические требования
 
@@ -138,5 +137,5 @@ An application for viewing an endless feed of pictures from Unsplash API
 3. В приложении использованы UImageView, UIButton, UILabel, TabBarController, NavigationController, NavigationBar, UITableView, UITableViewCell.
 4. Приложение должно поддерживать устройства iPhone с iOS 13 или выше, предусмотрен только портретный режим.
 
-# Cкриншоты приложения
+
 
